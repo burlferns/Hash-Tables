@@ -54,9 +54,29 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        arrayIndex = self._hash_mod(key)
+        keyAlreadyExists = False
+        nodePtr = None
+         
+        if self.storage[arrayIndex] != None:
+            # Check if the key already exists within the asociated link list
+            nodePtr = self.storage[arrayIndex]
+            if nodePtr.key == key:
+                keyAlreadyExists == True
+            while nodePtr.next != None and not keyAlreadyExists:
+                nodePtr = nodePtr.next
+                if nodePtr.key == key:
+                    keyAlreadyExists == True
 
-
+            if keyAlreadyExists:
+                nodePtr.value = value
+            else:
+                newNode = LinkedPair(key,value)
+                nodePtr.next = newNode
+        else:
+            # The key does not exist becasue the asociated link list does not exist
+            newNode = LinkedPair(key,value)
+            self.storage[arrayIndex] = newNode
 
     def remove(self, key):
         '''
@@ -118,3 +138,37 @@ if __name__ == "__main__":
     print(ht.retrieve("line_3"))
 
     print("")
+
+    # My printing function for hash table
+    # def printHt(ht):
+    #     for elem in ht.storage:
+    #         if elem == None:
+    #             print("None")
+    #         else:
+    #             print("Used",end="")
+    #             currNode = elem
+    #             while currNode != None:
+    #                 print(f'->({currNode.key},{currNode.value})',end="")
+    #                 currNode = currNode.next
+    #             print("")
+                
+    
+    # ht = HashTable(8)
+
+    # ht.insert("key-0", "val-0")
+    # ht.insert("key-1", "val-1")
+    # ht.insert("key-2", "val-2")
+    # ht.insert("key-3", "val-3")
+    # ht.insert("key-4", "val-4")
+    # ht.insert("key-5", "val-5")
+    # ht.insert("key-6", "val-6")
+    # ht.insert("key-7", "val-7")
+    # ht.insert("key-8", "val-8")
+    # ht.insert("key-9", "val-9")
+
+    # printHt(ht)
+    # Note that the hash function uses a random value for every python process for
+    # some security issue. If you want to stop it from using a random value for debugging
+    # purposes, then set the path variable in the base shell using 'export PYTHONHASHSEED=0'
+    # To set it back to use random again, use 'export PYTHONHASHSEED=random', or open up
+    # a new shell 
