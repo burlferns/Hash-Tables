@@ -62,11 +62,11 @@ class HashTable:
             # Check if the key already exists within the asociated link list
             nodePtr = self.storage[arrayIndex]
             if nodePtr.key == key:
-                keyAlreadyExists == True
+                keyAlreadyExists = True
             while nodePtr.next != None and not keyAlreadyExists:
                 nodePtr = nodePtr.next
                 if nodePtr.key == key:
-                    keyAlreadyExists == True
+                    keyAlreadyExists = True
 
             if keyAlreadyExists:
                 nodePtr.value = value
@@ -97,7 +97,27 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        arrayIndex = self._hash_mod(key)
+        keyAlreadyExists = False
+        nodePtr = None
+         
+        if self.storage[arrayIndex] != None:
+            # Check if the key already exists within the asociated link list
+            nodePtr = self.storage[arrayIndex]
+            if nodePtr.key == key:
+                keyAlreadyExists = True
+            while nodePtr.next != None and not keyAlreadyExists:
+                nodePtr = nodePtr.next
+                if nodePtr.key == key:
+                    keyAlreadyExists = True
+
+            if keyAlreadyExists:
+                return nodePtr.value
+            else:
+                return None
+        else:
+            # The key does not exist becasue the asociated link list does not exist
+            return None
 
 
     def resize(self):
@@ -112,6 +132,24 @@ class HashTable:
 
 
 if __name__ == "__main__":
+    ##########################################################################
+    # My printing function for hash table
+    ##########################################################################
+    # def printHt(ht):
+    #     for elem in ht.storage:
+    #         if elem == None:
+    #             print("None")
+    #         else:
+    #             print("Used",end="")
+    #             currNode = elem
+    #             while currNode != None:
+    #                 print(f'->({currNode.key},{currNode.value})',end="")
+    #                 currNode = currNode.next
+    #             print("")
+
+    ##########################################################################
+    # Default testing code
+    #########################################################################
     ht = HashTable(2)
 
     ht.insert("line_1", "Tiny hash table")
@@ -139,20 +177,11 @@ if __name__ == "__main__":
 
     print("")
 
-    # My printing function for hash table
-    # def printHt(ht):
-    #     for elem in ht.storage:
-    #         if elem == None:
-    #             print("None")
-    #         else:
-    #             print("Used",end="")
-    #             currNode = elem
-    #             while currNode != None:
-    #                 print(f'->({currNode.key},{currNode.value})',end="")
-    #                 currNode = currNode.next
-    #             print("")
-                
     
+                
+    ##########################################################################
+    # My testing code
+    #########################################################################
     # ht = HashTable(8)
 
     # ht.insert("key-0", "val-0")
@@ -166,6 +195,11 @@ if __name__ == "__main__":
     # ht.insert("key-8", "val-8")
     # ht.insert("key-9", "val-9")
 
+    # print("First printing:")
+    # printHt(ht)
+
+    # ht.insert("key-6", "val-NOT6")
+    # print("Second printing:")
     # printHt(ht)
     # Note that the hash function uses a random value for every python process for
     # some security issue. If you want to stop it from using a random value for debugging
