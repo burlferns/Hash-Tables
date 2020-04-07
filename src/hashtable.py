@@ -86,7 +86,36 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        arrayIndex = self._hash_mod(key)
+        keyAlreadyExists = False
+        nodePtr = None
+        prevNodePtr = None
+         
+        if self.storage[arrayIndex] != None:
+            # Check if the key already exists within the asociated link list
+            nodePtr = self.storage[arrayIndex]
+            prevNodePtr = nodePtr
+            if nodePtr.key == key:
+                keyAlreadyExists = True
+            while nodePtr.next != None and not keyAlreadyExists:
+                nodePtr = nodePtr.next
+                if nodePtr.key == key:
+                    keyAlreadyExists = True
+                if not keyAlreadyExists:
+                    prevNodePtr = nodePtr
+
+            if keyAlreadyExists:
+                if nodePtr == prevNodePtr:
+                    # first node in list
+                    self.storage[arrayIndex] = nodePtr.next
+                else:
+                    # second or greater node in list
+                    prevNodePtr.next = nodePtr.next
+            else:
+                print("Key not found")
+        else:
+            # The key does not exist because the asociated link list does not exist
+            print("Key not found")
 
 
     def retrieve(self, key):
@@ -127,7 +156,15 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        newHt = HashTable(self.capacity*2)
+        for elem in self.storage:
+            if elem != None:
+                currNode = elem
+                while currNode != None:
+                    newHt.insert(currNode.key,currNode.value)
+                    currNode = currNode.next
+        self.capacity = newHt.capacity
+        self.storage = newHt.storage
 
 
 
@@ -198,9 +235,41 @@ if __name__ == "__main__":
     # print("First printing:")
     # printHt(ht)
 
+    # print("************************************************")
     # ht.insert("key-6", "val-NOT6")
-    # print("Second printing:")
+    # print("Printing after key-6 value changed:")
     # printHt(ht)
+
+    # print("************************************************")
+    # ht.resize()
+    # print("Printing after resizing:")
+    # printHt(ht)
+
+    # print("************************************************")
+    # print("Remove key-1")
+    # ht.remove("key-1")
+    # printHt(ht)
+
+    # print("************************************************")
+    # print("Remove key-2")
+    # ht.remove("key-2")
+    # printHt(ht)
+
+    # print("************************************************")
+    # print("Remove key-7")
+    # ht.remove("key-7")
+    # printHt(ht)
+
+    # print("************************************************")
+    # print("Remove key-9")
+    # ht.remove("key-9")
+    # printHt(ht)
+
+    # print("************************************************")
+    # print("Remove key-4")
+    # ht.remove("key-4")
+    # printHt(ht)
+
     # Note that the hash function uses a random value for every python process for
     # some security issue. If you want to stop it from using a random value for debugging
     # purposes, then set the path variable in the base shell using 'export PYTHONHASHSEED=0'
